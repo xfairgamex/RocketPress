@@ -28,7 +28,7 @@
 ## Tasks
 - [ ] 1.0 Shopify Integration & Order Sync
   - [x] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
-  - [ ] 1.2 Implement order webhook to capture unfulfilled orders.
+  - [x] 1.2 Implement order webhook to capture unfulfilled orders.
   - [ ] 1.3 Map SKUs to artwork files and blank garment SKUs.
   - [ ] 1.4 Persist order data and fulfillment status in the database.
   - [ ] 1.5 Write unit tests for order sync logic.
