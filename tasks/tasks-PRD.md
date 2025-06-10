@@ -24,18 +24,19 @@
 - `frontend/components/AdminDashboard.test.tsx` - Tests for AdminDashboard.tsx.
 - `frontend/components/HeatPressGuide.tsx` - Guides operator through heat press workflow.
 - `frontend/components/HeatPressGuide.test.tsx` - Tests for HeatPressGuide.tsx.
+- `tasks/tasks-PRD.md` - Task list tracking PRD progress.
 
 ### Notes
 - Place unit tests alongside their respective code files.
 - Run all tests with `npx jest`.
 
 ## Tasks
-- [ ] 1.0 Shopify Integration & Order Sync
+- [x] 1.0 Shopify Integration & Order Sync
   - [x] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
   - [x] 1.2 Implement order webhook to capture unfulfilled orders.
   - [x] 1.3 Map SKUs to artwork files and blank garment SKUs.
   - [x] 1.4 Persist order data and fulfillment status in the PostgreSQL database.
-  - [ ] 1.5 Write unit tests for order sync logic.
+  - [x] 1.5 Write unit tests for order sync logic.
 - [ ] 2.0 Artwork Management with AI Gang Sheet Generation
   - [ ] 2.1 Build service to associate SKUs with artwork files.
   - [ ] 2.2 Develop AI-driven gang sheet layout algorithm.
