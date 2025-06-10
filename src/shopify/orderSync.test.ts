@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import router, { getUnfulfilledOrders, clearOrders } from './orderSync';
 import { addSkuMapping, clearSkuMappings } from './skuMapper';
-import { initDb } from '../db';
+import pool, { initDb } from '../db';
 
 describe('orderSync webhook', () => {
   const app = express();
@@ -48,5 +48,18 @@ describe('orderSync webhook', () => {
       artworkFile: 'designs/sku1.png',
       blankSku: 'BLANK1',
     });
+  });
+
+  test('persists order data to the database', async () => {
+    const order = { id: 4, fulfillment_status: null };
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .send(order)
+      .expect(200);
+    const result = await pool.query('SELECT * FROM orders WHERE id = $1', [
+      order.id,
+    ]);
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0].id).toBe(order.id);
   });
 });
