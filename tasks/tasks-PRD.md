@@ -5,9 +5,11 @@
 - `src/shopify/auth.test.ts` - Tests for auth.ts.
 - `jest.config.js` - Jest configuration.
 - `tsconfig.json` - TypeScript compiler options.
+- `package.json` - Node.js dependencies and scripts.
 - `.env.example` - Example environment variables.
 - `src/shopify/orderSync.ts` - Handles Shopify webhook and unfulfilled order syncing.
 - `src/shopify/orderSync.test.ts` - Unit tests for orderSync.ts.
+- `src/db.ts` - Connects to PostgreSQL (uses pg-mem during tests).
 - `src/shopify/skuMapper.ts` - Maps product SKUs to artwork and blank garment SKUs.
 - `src/shopify/skuMapper.test.ts` - Tests for skuMapper.ts.
 - `src/artwork/gangSheetGenerator.ts` - AI algorithm for gang sheet layout.
@@ -32,7 +34,7 @@
   - [x] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
   - [x] 1.2 Implement order webhook to capture unfulfilled orders.
   - [x] 1.3 Map SKUs to artwork files and blank garment SKUs.
-  - [ ] 1.4 Persist order data and fulfillment status in the database.
+  - [x] 1.4 Persist order data and fulfillment status in the PostgreSQL database.
   - [ ] 1.5 Write unit tests for order sync logic.
 - [ ] 2.0 Artwork Management with AI Gang Sheet Generation
   - [ ] 2.1 Build service to associate SKUs with artwork files.
