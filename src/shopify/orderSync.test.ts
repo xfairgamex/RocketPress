@@ -2,14 +2,19 @@ import request from 'supertest';
 import express from 'express';
 import router, { getUnfulfilledOrders, clearOrders } from './orderSync';
 import { addSkuMapping, clearSkuMappings } from './skuMapper';
+import { initDb } from '../db';
 
 describe('orderSync webhook', () => {
   const app = express();
   app.use(express.json());
   app.use('/shopify', router);
 
-  beforeEach(() => {
-    clearOrders();
+  beforeAll(async () => {
+    await initDb();
+  });
+
+  beforeEach(async () => {
+    await clearOrders();
     clearSkuMappings();
     addSkuMapping('SKU1', { artworkFile: 'designs/sku1.png', blankSku: 'BLANK1' });
   });
