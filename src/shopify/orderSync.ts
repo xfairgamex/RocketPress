@@ -1,4 +1,5 @@
 import { Router, RequestHandler, Request, Response } from 'express';
+import { getSkuMapping, SkuMapping } from './skuMapper';
 
 export interface ShopifyOrder {
   id: number;
@@ -7,7 +8,16 @@ export interface ShopifyOrder {
 }
 
 const router = Router();
-const unfulfilledOrders: ShopifyOrder[] = [];
+export interface MappedLineItem extends SkuMapping {
+  sku: string;
+  quantity: number;
+}
+
+export interface MappedOrder extends ShopifyOrder {
+  mappedLineItems: MappedLineItem[];
+}
+
+const unfulfilledOrders: MappedOrder[] = [];
 
 const handleOrder: RequestHandler = (req: Request, res: Response) => {
   const order: ShopifyOrder = req.body as ShopifyOrder;
@@ -16,7 +26,22 @@ const handleOrder: RequestHandler = (req: Request, res: Response) => {
     return;
   }
   if (!order.fulfillment_status || order.fulfillment_status === 'unfulfilled') {
-    unfulfilledOrders.push(order);
+    const mappedLineItems: MappedLineItem[] =
+      (order.line_items || []).map((item: any) => {
+        const mapping = getSkuMapping(item.sku) || {
+          artworkFile: '',
+          blankSku: '',
+        };
+        return {
+          sku: item.sku,
+          quantity: item.quantity,
+          ...mapping,
+        };
+      });
+    unfulfilledOrders.push({
+      ...order,
+      mappedLineItems,
+    });
   }
   res.status(200).send('OK');
 };

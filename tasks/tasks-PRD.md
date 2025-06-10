@@ -8,6 +8,8 @@
 - `.env.example` - Example environment variables.
 - `src/shopify/orderSync.ts` - Handles Shopify webhook and unfulfilled order syncing.
 - `src/shopify/orderSync.test.ts` - Unit tests for orderSync.ts.
+- `src/shopify/skuMapper.ts` - Maps product SKUs to artwork and blank garment SKUs.
+- `src/shopify/skuMapper.test.ts` - Tests for skuMapper.ts.
 - `src/artwork/gangSheetGenerator.ts` - AI algorithm for gang sheet layout.
 - `src/artwork/gangSheetGenerator.test.ts` - Tests for gangSheetGenerator.ts.
 - `src/barcodes/barcodeGenerator.ts` - Generates barcodes linked to orders.
@@ -29,7 +31,7 @@
 - [ ] 1.0 Shopify Integration & Order Sync
   - [x] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
   - [x] 1.2 Implement order webhook to capture unfulfilled orders.
-  - [ ] 1.3 Map SKUs to artwork files and blank garment SKUs.
+  - [x] 1.3 Map SKUs to artwork files and blank garment SKUs.
   - [ ] 1.4 Persist order data and fulfillment status in the database.
   - [ ] 1.5 Write unit tests for order sync logic.
 - [ ] 2.0 Artwork Management with AI Gang Sheet Generation
