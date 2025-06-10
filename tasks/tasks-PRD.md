@@ -1,4 +1,11 @@
 ## Relevant Files
+- `src/app.ts` - Express app entry point.
+- `src/index.ts` - Runs the compiled server.
+- `src/shopify/auth.ts` - Handles Shopify OAuth routes.
+- `src/shopify/auth.test.ts` - Tests for auth.ts.
+- `jest.config.js` - Jest configuration.
+- `tsconfig.json` - TypeScript compiler options.
+- `.env.example` - Example environment variables.
 - `src/shopify/orderSync.ts` - Handles Shopify webhook and unfulfilled order syncing.
 - `src/shopify/orderSync.test.ts` - Unit tests for orderSync.ts.
 - `src/artwork/gangSheetGenerator.ts` - AI algorithm for gang sheet layout.
@@ -20,7 +27,7 @@
 
 ## Tasks
 - [ ] 1.0 Shopify Integration & Order Sync
-  - [ ] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
+  - [x] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
   - [ ] 1.2 Implement order webhook to capture unfulfilled orders.
   - [ ] 1.3 Map SKUs to artwork files and blank garment SKUs.
   - [ ] 1.4 Persist order data and fulfillment status in the database.
