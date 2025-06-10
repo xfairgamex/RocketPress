@@ -1,0 +1,51 @@
+## Relevant Files
+- `src/shopify/orderSync.ts` - Handles Shopify webhook and unfulfilled order syncing.
+- `src/shopify/orderSync.test.ts` - Unit tests for orderSync.ts.
+- `src/artwork/gangSheetGenerator.ts` - AI algorithm for gang sheet layout.
+- `src/artwork/gangSheetGenerator.test.ts` - Tests for gangSheetGenerator.ts.
+- `src/barcodes/barcodeGenerator.ts` - Generates barcodes linked to orders.
+- `src/barcodes/barcodeGenerator.test.ts` - Tests for barcode generation logic.
+- `src/inventory/snsIntegration.ts` - Interfaces with S&S Activewear API.
+- `src/inventory/snsIntegration.test.ts` - Tests for snsIntegration.ts.
+- `src/shipping/shippingService.ts` - Creates shipping labels via EasyPost or Shopify.
+- `src/shipping/shippingService.test.ts` - Tests for shippingService.ts.
+- `frontend/components/AdminDashboard.tsx` - Displays job tracking and inventory.
+- `frontend/components/AdminDashboard.test.tsx` - Tests for AdminDashboard.tsx.
+- `frontend/components/HeatPressGuide.tsx` - Guides operator through heat press workflow.
+- `frontend/components/HeatPressGuide.test.tsx` - Tests for HeatPressGuide.tsx.
+
+### Notes
+- Place unit tests alongside their respective code files.
+- Run all tests with `npx jest`.
+
+## Tasks
+- [ ] 1.0 Shopify Integration & Order Sync
+  - [ ] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
+  - [ ] 1.2 Implement order webhook to capture unfulfilled orders.
+  - [ ] 1.3 Map SKUs to artwork files and blank garment SKUs.
+  - [ ] 1.4 Persist order data and fulfillment status in the database.
+  - [ ] 1.5 Write unit tests for order sync logic.
+- [ ] 2.0 Artwork Management with AI Gang Sheet Generation
+  - [ ] 2.1 Build service to associate SKUs with artwork files.
+  - [ ] 2.2 Develop AI-driven gang sheet layout algorithm.
+  - [ ] 2.3 Create UI to preview gang sheets before printing.
+  - [ ] 2.4 Export print-ready files (PDF/PNG/TIFF) for RIP software.
+  - [ ] 2.5 Write tests for gang sheet generator and preview component.
+- [ ] 3.0 Inventory Management with S&S Activewear Integration
+  - [ ] 3.1 Track blank garment inventory by SKU, size, and color.
+  - [ ] 3.2 Sync inventory levels with incoming Shopify orders.
+  - [ ] 3.3 Integrate with S&S API to auto-purchase garments.
+  - [ ] 3.4 Manage purchase queue to avoid duplicate orders.
+  - [ ] 3.5 Write tests for inventory updates and S&S integration.
+- [ ] 4.0 Barcode-Driven Printing and Heat Press Workflow
+  - [ ] 4.1 Generate unique barcodes for each transfer.
+  - [ ] 4.2 Display garment mockup and placement guide when scanning barcode.
+  - [ ] 4.3 Send files to print queue and track printing status.
+  - [ ] 4.4 Confirm heat press step triggers shipping label generation.
+  - [ ] 4.5 Test barcode generation and heat press workflow components.
+- [ ] 5.0 Shipping Automation and Admin Dashboard
+  - [ ] 5.1 Connect to EasyPost and Shopify APIs to generate labels.
+  - [ ] 5.2 Auto-create packing slips with barcode for final scan.
+  - [ ] 5.3 Update Shopify fulfillment status after shipment.
+  - [ ] 5.4 Build admin dashboard for job tracking, inventory, and logs.
+  - [ ] 5.5 Write tests for shipping service and dashboard UI.
