@@ -29,7 +29,7 @@ const handleOrder: RequestHandler = async (req: Request, res: Response) => {
   }
   const mappedLineItems: MappedLineItem[] =
     (order.line_items || []).map((item: any) => {
-      const mapping = getSkuMapping(item.sku) || {
+      const mapping = getSkuMapping(shop, item.sku) || {
         artworkFile: '',
         blankSku: '',
       };

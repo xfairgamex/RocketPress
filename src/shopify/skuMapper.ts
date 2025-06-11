@@ -3,22 +3,34 @@ export interface SkuMapping {
   blankSku: string;
 }
 
-const mappings: Record<string, SkuMapping> = {
-  SKU1: { artworkFile: 'designs/sku1.png', blankSku: 'BLANK1' },
-  SKU2: { artworkFile: 'designs/sku2.png', blankSku: 'BLANK2' },
-};
+// mappings are stored per shop to support multi-store setups
+const mappings: Record<string, Record<string, SkuMapping>> = {};
 
-export function getSkuMapping(sku: string): SkuMapping | undefined {
-  return mappings[sku];
+export function getSkuMapping(
+  shop: string,
+  sku: string
+): SkuMapping | undefined {
+  return mappings[shop]?.[sku];
 }
 
-export function addSkuMapping(sku: string, mapping: SkuMapping) {
-  mappings[sku] = mapping;
+export function addSkuMapping(
+  shop: string,
+  sku: string,
+  mapping: SkuMapping
+) {
+  if (!mappings[shop]) {
+    mappings[shop] = {};
+  }
+  mappings[shop][sku] = mapping;
 }
 
-export function clearSkuMappings() {
-  for (const key of Object.keys(mappings)) {
-    delete mappings[key];
+export function clearSkuMappings(shop?: string) {
+  if (shop) {
+    delete mappings[shop];
+  } else {
+    for (const key of Object.keys(mappings)) {
+      delete mappings[key];
+    }
   }
 }
 

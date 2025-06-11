@@ -16,7 +16,10 @@ describe('orderSync webhook', () => {
   beforeEach(async () => {
     await clearOrders();
     clearSkuMappings();
-    addSkuMapping('SKU1', { artworkFile: 'designs/sku1.png', blankSku: 'BLANK1' });
+    addSkuMapping('shop1.myshopify.com', 'SKU1', {
+      artworkFile: 'designs/sku1.png',
+      blankSku: 'BLANK1',
+    });
   });
 
   test('captures unfulfilled orders', async () => {
