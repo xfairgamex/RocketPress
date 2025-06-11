@@ -13,17 +13,18 @@ if (process.env.NODE_ENV === 'test') {
 
 export async function initDb() {
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS orders (
-      id BIGINT PRIMARY KEY,
-      data JSONB NOT NULL,
-      fulfillment_status TEXT
+    CREATE TABLE IF NOT EXISTS shops (
+      shop TEXT PRIMARY KEY,
+      access_token TEXT NOT NULL
     )
   `);
 
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS shops (
-      shop TEXT PRIMARY KEY,
-      access_token TEXT NOT NULL
+    CREATE TABLE IF NOT EXISTS orders (
+      id BIGINT PRIMARY KEY,
+      shop TEXT NOT NULL,
+      data JSONB NOT NULL,
+      fulfillment_status TEXT
     )
   `);
 }

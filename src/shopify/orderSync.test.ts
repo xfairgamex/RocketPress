@@ -69,11 +69,14 @@ describe('orderSync webhook', () => {
       .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
       .send(order)
       .expect(200);
-    const result = await pool.query('SELECT * FROM orders WHERE id = $1', [
-      order.id,
-    ]);
+    const result = await pool.query(
+      'SELECT * FROM orders WHERE id = $1 AND shop = $2',
+      [order.id, 'shop1.myshopify.com']
+    );
     expect(result.rows).toHaveLength(1);
     expect(result.rows[0].id).toBe(order.id);
+    expect(result.rows[0].shop).toBe('shop1.myshopify.com');
+    expect(result.rows[0].fulfillment_status).toBeNull();
   });
 
   test('tracks unfulfilled orders separately for each shop', async () => {
