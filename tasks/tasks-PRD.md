@@ -36,7 +36,7 @@
   - [x] 1.2 Add multi-store authentication with per-shop tokens stored in PostgreSQL.
   - [x] 1.3 Implement order webhook to capture unfulfilled orders for each store.
   - [x] 1.4 Map SKUs to artwork files and blank garment SKUs.
-  - [ ] 1.5 Persist order data and fulfillment status with a shop reference.
+  - [x] 1.5 Persist order data and fulfillment status with a shop reference.
   - [ ] 1.6 Write unit tests for multi-store order sync logic.
 - [ ] 2.0 Artwork Management with AI Gang Sheet Generation
   - [ ] 2.1 Build service to associate SKUs with artwork files.

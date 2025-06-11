@@ -16,6 +16,7 @@ export interface MappedLineItem extends SkuMapping {
 
 export interface MappedOrder extends ShopifyOrder {
   mappedLineItems: MappedLineItem[];
+  shop: string;
 }
 
 const unfulfilledOrders: Record<string, MappedOrder[]> = {};
@@ -40,17 +41,18 @@ const handleOrder: RequestHandler = async (req: Request, res: Response) => {
       };
     });
 
-  const mappedOrder: MappedOrder = {
-    ...order,
-    mappedLineItems,
-  };
+const mappedOrder: MappedOrder = {
+  ...order,
+  mappedLineItems,
+  shop,
+};
 
   await pool.query(
-    `INSERT INTO orders (id, data, fulfillment_status)
-     VALUES ($1, $2::jsonb, $3)
+    `INSERT INTO orders (id, shop, data, fulfillment_status)
+     VALUES ($1, $2, $3::jsonb, $4)
      ON CONFLICT (id)
-     DO UPDATE SET data = EXCLUDED.data, fulfillment_status = EXCLUDED.fulfillment_status`,
-    [mappedOrder.id, JSON.stringify(mappedOrder), mappedOrder.fulfillment_status]
+     DO UPDATE SET shop = EXCLUDED.shop, data = EXCLUDED.data, fulfillment_status = EXCLUDED.fulfillment_status`,
+    [mappedOrder.id, shop, JSON.stringify(mappedOrder), mappedOrder.fulfillment_status]
   );
 
   if (!order.fulfillment_status || order.fulfillment_status === 'unfulfilled') {
