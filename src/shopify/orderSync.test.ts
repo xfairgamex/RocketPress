@@ -96,4 +96,54 @@ describe('orderSync webhook', () => {
     expect(getUnfulfilledOrders('shop2.myshopify.com')).toHaveLength(1);
     expect(getUnfulfilledOrders()).toHaveLength(2);
   });
+
+  test('persists orders for multiple shops separately', async () => {
+    const order1 = { id: 7, fulfillment_status: null };
+    const order2 = { id: 8, fulfillment_status: null };
+
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
+      .send(order1)
+      .expect(200);
+
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop2.myshopify.com')
+      .send(order2)
+      .expect(200);
+
+    const result1 = await pool.query(
+      'SELECT * FROM orders WHERE id = $1 AND shop = $2',
+      [order1.id, 'shop1.myshopify.com']
+    );
+    const result2 = await pool.query(
+      'SELECT * FROM orders WHERE id = $1 AND shop = $2',
+      [order2.id, 'shop2.myshopify.com']
+    );
+
+    expect(result1.rows).toHaveLength(1);
+    expect(result2.rows).toHaveLength(1);
+  });
+
+  test('clearOrders resets stored orders for all shops', async () => {
+    const order = { id: 9, fulfillment_status: null };
+
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
+      .send(order)
+      .expect(200);
+
+    await clearOrders();
+
+    expect(getUnfulfilledOrders('shop1.myshopify.com')).toHaveLength(0);
+
+    const result = await pool.query('SELECT * FROM orders');
+    expect(result.rows).toHaveLength(0);
+  });
+
+  test('returns empty array when no orders for shop', () => {
+    expect(getUnfulfilledOrders('nosuch.myshopify.com')).toEqual([]);
+  });
 });
