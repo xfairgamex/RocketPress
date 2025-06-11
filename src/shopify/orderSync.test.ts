@@ -21,14 +21,22 @@ describe('orderSync webhook', () => {
 
   test('captures unfulfilled orders', async () => {
     const order = { id: 1, fulfillment_status: null };
-    await request(app).post('/shopify/webhook/orders/create').send(order).expect(200);
-    expect(getUnfulfilledOrders()).toHaveLength(1);
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
+      .send(order)
+      .expect(200);
+    expect(getUnfulfilledOrders('shop1.myshopify.com')).toHaveLength(1);
   });
 
   test('ignores fulfilled orders', async () => {
     const order = { id: 2, fulfillment_status: 'fulfilled' };
-    await request(app).post('/shopify/webhook/orders/create').send(order).expect(200);
-    expect(getUnfulfilledOrders()).toHaveLength(0);
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
+      .send(order)
+      .expect(200);
+    expect(getUnfulfilledOrders('shop1.myshopify.com')).toHaveLength(0);
   });
 
   test('maps line items with sku data', async () => {
@@ -39,9 +47,10 @@ describe('orderSync webhook', () => {
     };
     await request(app)
       .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
       .send(order)
       .expect(200);
-    const saved = getUnfulfilledOrders()[0];
+    const saved = getUnfulfilledOrders('shop1.myshopify.com')[0];
     expect(saved.mappedLineItems[0]).toEqual({
       sku: 'SKU1',
       quantity: 1,
@@ -54,6 +63,7 @@ describe('orderSync webhook', () => {
     const order = { id: 4, fulfillment_status: null };
     await request(app)
       .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
       .send(order)
       .expect(200);
     const result = await pool.query('SELECT * FROM orders WHERE id = $1', [
@@ -61,5 +71,23 @@ describe('orderSync webhook', () => {
     ]);
     expect(result.rows).toHaveLength(1);
     expect(result.rows[0].id).toBe(order.id);
+  });
+
+  test('tracks unfulfilled orders separately for each shop', async () => {
+    const order1 = { id: 5, fulfillment_status: null };
+    const order2 = { id: 6, fulfillment_status: null };
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop1.myshopify.com')
+      .send(order1)
+      .expect(200);
+    await request(app)
+      .post('/shopify/webhook/orders/create')
+      .set('X-Shopify-Shop-Domain', 'shop2.myshopify.com')
+      .send(order2)
+      .expect(200);
+    expect(getUnfulfilledOrders('shop1.myshopify.com')).toHaveLength(1);
+    expect(getUnfulfilledOrders('shop2.myshopify.com')).toHaveLength(1);
+    expect(getUnfulfilledOrders()).toHaveLength(2);
   });
 });
