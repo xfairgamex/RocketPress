@@ -5,20 +5,21 @@
 
 ---
 
+
 ## 1. Overview
 
-AutoDTF is a SaaS platform that automates the DTF production process from Shopify order to shipment. It pulls in Shopify orders, matches SKUs with artwork and garment blanks, auto-generates gang sheets, interfaces with DTF printers and cutters, manages blank garment inventory, places just-in-time orders through the S\&S Activewear API, guides the press process with visual mockups, and completes shipping label generation through barcode-driven workflows. This minimizes downtime, ensures the right garments are always on hand, and significantly reduces human error in production.
+AutoDTF is a SaaS platform that automates the DTF production process from Shopify order to shipment. Built as a multi-tenant Shopify app, it supports multiple stores from day one. It pulls in Shopify orders, matches SKUs with artwork and garment blanks, auto-generates gang sheets, interfaces with DTF printers and cutters, manages blank garment inventory, places just-in-time orders through the S&S Activewear API, guides the press process with visual mockups, and completes shipping label generation through barcode-driven workflows. This minimizes downtime, ensures the right garments are always on hand, and significantly reduces human error in production.
 
 ---
 
 ## 2. Core Features
 
 ### A. Shopify Integration
-
+* Public app installable through the Shopify App Store.
+* Multi-tenant architecture supporting multiple stores.
 * Native app experience within Shopify admin.
-* Auto-sync unfulfilled orders in real-time.
+* Auto-sync unfulfilled orders for each connected store in real-time.
 * Match ordered SKUs with high-res artwork and blank garment SKUs.
-
 ### B. Artwork & Gang Sheet Management
 
 * Auto-match SKUs with correct artwork files.
@@ -103,7 +104,6 @@ AutoDTF is a SaaS platform that automates the DTF production process from Shopif
 
 * Heat press timer integration & logging.
 * Multi-location shop support.
-* Multi-store (Shopify) management from single dashboard.
 
 ---
 
