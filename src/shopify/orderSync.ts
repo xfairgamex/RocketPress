@@ -18,11 +18,12 @@ export interface MappedOrder extends ShopifyOrder {
   mappedLineItems: MappedLineItem[];
 }
 
-const unfulfilledOrders: MappedOrder[] = [];
+const unfulfilledOrders: Record<string, MappedOrder[]> = {};
 
 const handleOrder: RequestHandler = async (req: Request, res: Response) => {
   const order: ShopifyOrder = req.body as ShopifyOrder;
-  if (!order) {
+  const shop = req.headers['x-shopify-shop-domain'] as string | undefined;
+  if (!order || !shop) {
     res.status(400).send('Invalid order');
     return;
   }
@@ -53,19 +54,27 @@ const handleOrder: RequestHandler = async (req: Request, res: Response) => {
   );
 
   if (!order.fulfillment_status || order.fulfillment_status === 'unfulfilled') {
-    unfulfilledOrders.push(mappedOrder);
+    if (!unfulfilledOrders[shop]) {
+      unfulfilledOrders[shop] = [];
+    }
+    unfulfilledOrders[shop].push(mappedOrder);
   }
   res.status(200).send('OK');
 };
 
 router.post('/webhook/orders/create', handleOrder);
 
-export function getUnfulfilledOrders() {
-  return unfulfilledOrders;
+export function getUnfulfilledOrders(shop?: string) {
+  if (shop) {
+    return unfulfilledOrders[shop] || [];
+  }
+  return Object.values(unfulfilledOrders).flat();
 }
 
 export async function clearOrders() {
-  unfulfilledOrders.length = 0;
+  for (const key of Object.keys(unfulfilledOrders)) {
+    delete unfulfilledOrders[key];
+  }
   await pool.query('DELETE FROM orders');
 }
 
