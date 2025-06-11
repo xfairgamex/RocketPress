@@ -9,7 +9,7 @@
 - `.env.example` - Example environment variables.
 - `src/shopify/orderSync.ts` - Handles Shopify webhook and unfulfilled order syncing.
 - `src/shopify/orderSync.test.ts` - Unit tests for orderSync.ts.
-- `src/db.ts` - Connects to PostgreSQL (uses pg-mem during tests).
+- `src/db.ts` - Connects to PostgreSQL and stores orders and shop tokens.
 - `src/shopify/skuMapper.ts` - Maps product SKUs to artwork and blank garment SKUs.
 - `src/shopify/skuMapper.test.ts` - Tests for skuMapper.ts.
 - `src/artwork/gangSheetGenerator.ts` - AI algorithm for gang sheet layout.
@@ -33,7 +33,7 @@
 ## Tasks
 - [ ] 1.0 Shopify Integration & Multi-Store Order Sync
   - [x] 1.1 Set up Node.js Shopify app with OAuth and initial project structure.
-  - [ ] 1.2 Add multi-store authentication with per-shop tokens stored in PostgreSQL.
+  - [x] 1.2 Add multi-store authentication with per-shop tokens stored in PostgreSQL.
   - [ ] 1.3 Implement order webhook to capture unfulfilled orders for each store.
   - [ ] 1.4 Map SKUs to artwork files and blank garment SKUs.
   - [ ] 1.5 Persist order data and fulfillment status with a shop reference.

@@ -2,12 +2,13 @@ import '@shopify/shopify-api/adapters/node';
 import { Router } from 'express';
 import { shopifyApi, LATEST_API_VERSION } from '@shopify/shopify-api';
 import dotenv from 'dotenv';
+import { saveShopToken } from '../db';
 
 dotenv.config();
 
 const router = Router();
 
-const shopify = shopifyApi({
+export const shopify = shopifyApi({
   apiKey: process.env.SHOPIFY_API_KEY || '',
   apiSecretKey: process.env.SHOPIFY_API_SECRET || '',
   scopes: ['read_products', 'write_products', 'read_orders', 'write_orders'],
@@ -29,10 +30,13 @@ router.get('/auth', async (req, res) => {
 
 router.get('/callback', async (req, res) => {
   try {
-    await shopify.auth.callback({
+    const { session } = await shopify.auth.callback({
       rawRequest: req,
       rawResponse: res,
     });
+    if (session.accessToken) {
+      await saveShopToken(session.shop, session.accessToken);
+    }
     res.redirect('/');
   } catch (error) {
     console.error('Shopify OAuth callback error', error);
